@@ -1,0 +1,84 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider  = "prisma-client-js"
+  //output    = "@prisma/client"
+  //previewFeatures = []
+}
+
+
+datasource SuncyanDatabase {
+  provider = "mysql"
+  url      = env("DATABASE_URL_APP")
+}
+model Cyan {
+  num       BigInt    @id @default(autoincrement())
+  userId    String    @unique
+  name      String
+  date      DateTime  @default(now())
+  type      Int?
+  datas     Datas[]
+  datasImportant DatasImportant[]
+}
+model Datas {
+  num     BigInt      @unique
+  cyan    Cyan        @relation(fields: [userId], references: [userId])
+  userId  String      @unique
+  userData Json
+  agent   String?
+  update  DateTime    @updatedAt
+
+  @@id(fields: [num, userId])
+}
+model DatasImportant {
+  num             BigInt      @unique
+  cyan            Cyan        @relation(fields: [userId], references: [userId])
+  userId          String      @unique
+  os              OS?
+  osLanguage      String?
+  language        Int?
+  region          String?
+  money           BigInt?
+  ball            BigInt?
+  playtime        BigInt?
+  payed           Boolean?
+  hack            Int?
+  HACK_code       String?
+  event_Sunlight  BigInt?
+  wintime         BigInt?
+  t_score         BigInt?
+  players         BigInt?
+  teamname        String?
+  clear           Int?
+  version         String?
+  update  DateTime    @updatedAt
+
+  @@id(fields: [num, userId])
+}
+model MailBox {
+    num             BigInt  @default(autoincrement())
+    userId          String
+    mailId          String  @unique
+    message         String
+    item            String
+    sender          String
+    state           Int
+    date            DateTime
+    
+
+    @@id(fields: [num, mailId])
+    @@index(fields: [mailId])
+}
+
+enum OS {
+  Android
+  iOS
+  Unknown
+}
+// model AuthTokens {
+//   tokenId String    @id @default(uuid())
+//   payload Json
+//   expire  DateTime
+// }
+
